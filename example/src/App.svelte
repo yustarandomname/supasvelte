@@ -1,18 +1,17 @@
 <script>
-	import {Table, supasvelte} from "supasvelte"
-	import {SUPABASE_URL, SUPABASE_KEY} from "./API_KEYS"
+	import TableTab from "./TableTab.svelte"
+	import {Container} from "projectc-components"
+	// import {sveltesupa} from "sveltesupa"
+	// import {SUPABASE_URL, SUPABASE_KEY} from "./API_KEYS"
 
 	// console.log(supasvelte)
-	supasvelte.init({url: SUPABASE_URL, key: SUPABASE_KEY})
+	sveltesupa.init({url: SUPABASE_URL, key: SUPABASE_KEY})
+
+	// const tabs = [
+	// 	{component: TableTab, props: {title: "Select"}}
+	// ]
 </script>
 <h1>test</h1>
 
-<Table name="Comments" select={"id,comment, up_votes"} where={"up_votes != 0"} let:data let:error>
-	{JSON.stringify(data)}
-	{@debug data}
-
-	<div slot="error">
-		Error: {JSON.stringify(error)}
-	</div>
-	<div slot="loading">LOADING</div>
-</Table>
+<!-- <Tabs {tabs} /> -->
+<Container>test</Container>
