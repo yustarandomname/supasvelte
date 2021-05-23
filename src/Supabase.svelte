@@ -1,5 +1,5 @@
 <script>
-  import {supasvelte} from "./supabaseStore"
+  import {sveltesupa} from "./supabaseStore"
 </script>
 
-<slot supabase={$supasvelte}/>
+<slot supabase={$sveltesupa}/>

@@ -1,5 +1,5 @@
 <script>
-  import {supasvelte} from "./supabaseStore"
+  import {sveltesupa} from "./supabaseStore"
 
   // SELECTORS
   export let name;
@@ -41,10 +41,10 @@
   }
 
   async function getTable() {
-    if (!$supasvelte) {_error = {message: "Supabase is not yet inited"}}
+    if (!$sveltesupa) {_error = {message: "Supabase is not yet inited"}}
     if (!name) {_error = {message: "Please specify the name of the table", code: "42P01"}; return}
 
-    let res = $supasvelte
+    let res = $sveltesupa
       .from(name)
       .select(select)
 

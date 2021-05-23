@@ -2,3 +2,4 @@
 /public/build/
 
 .DS_Store
+example/src/API_KEYS.js

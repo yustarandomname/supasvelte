@@ -1,6 +1,6 @@
 {
-  "name": "supasvelte",
-  "version": "0.0.1",
+  "name": "sveltesupa",
+  "version": "0.0.2",
   "description": "cybernetically enhanced supabase apps",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
