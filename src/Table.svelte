@@ -16,6 +16,7 @@
 
   // Local reactive variables
   let _error = false
+  let _data;
 
   function findFilterType(type) {
     switch (type) {
@@ -55,7 +56,7 @@
     }
     
     if (limit) res = res.limit(limit)
-    if (order) res = (order == "<") ? res.order({ascending: false}) : res.order({ascending: true})
+    if (order) res = (order == ">") ? res.order("id", {ascending: false}) : res.order("id",{ascending: true})
     if (range && range[0] && range[1]) res = res.range(range[0], range[1])
     if (single) res = res.single()
 
@@ -65,19 +66,21 @@
     _error = supabaseError
     if (supabaseError) return 
 
-    return data
+    _data = data
   }
+
+  getTable()
 </script>
 
 {#if _error}
-  <slot name="error" error={_error}/>
+  <slot name="error" error={_error} refresh={() => getTable()}/>
 {:else}
-  {#await getTable()} 
+  {#await _data} 
     <slot name="loading"/>
   {:then data}
-    <slot {data} />
+    <slot {data} refresh={() => getTable()}/>
   {:catch error}
     catch error
-    <slot name="error" {error} />
+    <slot name="error" {error} refresh={() => getTable()} />
   {/await}
 {/if}
