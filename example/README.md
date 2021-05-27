@@ -1,105 +1,87 @@
-*Looking for a shareable component template? Go here --> [sveltejs/component-template](https://github.com/sveltejs/component-template)*
+# supa svelte
+Cybernetically enhanced supabase apps
 
----
+## What is sveltesupa
+Svelte supa is build on top of svelte to give svelte users an easier way to access their supabase. 
 
-# svelte app
+## How to use sveltesupa
+I created an example app which is visible out [here](https://github.com/yustarandomname/supasvelte/tree/main/example).
 
-This is a project template for [Svelte](https://svelte.dev) apps. It lives at https://github.com/sveltejs/template.
-
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
-
-```bash
-npx degit sveltejs/template svelte-app
-cd svelte-app
+## Getting started
+Create a folder and run these commands in that directory.
+```
+  npx degit sveltejs/template
+  npm install supabase supasvelte
+  npm run dev
 ```
 
-*Note that you will need to have [Node.js](https://nodejs.org) installed.*
+## Documentation
+### Initalization
+Go to or create your supabase project. In the ``API`` sidebar, go to ``Authenication``. This is where you find your ``SUPABASE_KEY`` and ``SUPABASE_URL``. Paste these in your project. To initialze the project use.
 
+```javascript
+  import {sveltesupa} from "sveltesupa"
 
-## Get started
-
-Install the dependencies...
-
-```bash
-cd svelte-app
-npm install
+  sveltesupa.init({
+    url: "<YOUR_SUPABASE_URL>", 
+    key: "<YOUR_SUPABASE_key>"
+  })
 ```
 
-...then start [Rollup](https://rollupjs.org):
-
-```bash
-npm run dev
+### Auth
+``` javascript
+  import {Auth} from "sveltesupa"
+  <Auth {sveltesupa} />
 ```
 
-Navigate to [localhost:5000](http://localhost:5000). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
+#### Props
+- **sveltesupa**: *[Required]* An initialized sveltesupa.
 
-By default, the server will only respond to requests from localhost. To allow connections from other computers, edit the `sirv` commands in package.json to include the option `--host 0.0.0.0`.
+#### slots
+- user
+- error
+- signIn
+- signUp
+- signOut
 
-If you're using [Visual Studio Code](https://code.visualstudio.com/) we recommend installing the official extension [Svelte for VS Code](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode). If you are using other editors you may need to install a plugin in order to get syntax highlighting and intellisense.
+#### Example
+```javascript
+<script>
+  import {Auth, sveltesupa} from "sveltesupa"
+  sveltesupa.init({"<YOUR_SUPABASE_URL>", "<YOUR_SUPABASE_KEY>"})
+  let credentials = {email:"", password:""}
+</script>
 
-## Building and running in production mode
+<Auth {sveltesupa} let:user let:signIn let:signOut let:error>
+  <pre>{JSON.stringify(user, null, 2)}</pre>
 
-To create an optimised version of the app:
+  <button on:click={() => signOut()}>Sign out</button>
 
-```bash
-npm run build
+  <div slot="logged-out">
+    <form on:submit={signIn(credentials)}>
+      <input type="email" bind:value={credentials.email} required/>
+      <input type="password" bind:value={credentials.email} required />
+      <input type="submit">
+    </form>
+  </div>
+</Auth>
 ```
 
-You can run the newly built app with `npm run start`. This uses [sirv](https://github.com/lukeed/sirv), which is included in your package.json's `dependencies` so that the app will work when you deploy to platforms like [Heroku](https://heroku.com).
+### Table
+#### Props
+- **name**:[String] - *[Required]* - A name of a certain table in your database.
+- **select**: [String] - A comma seperated string of collums in a database.
+- **limit**
+- **order**
+- **range**
+- **single**
+- **where**
+#### Slots
+- data
+- error
+- refresh
+#### Example
 
-
-## Single-page app mode
-
-By default, sirv will only respond to requests that match files in `public`. This is to maximise compatibility with static fileservers, allowing you to deploy your app anywhere.
-
-If you're building a single-page app (SPA) with multiple routes, sirv needs to be able to respond to requests for *any* path. You can make it so by editing the `"start"` command in package.json:
-
-```js
-"start": "sirv public --single"
-```
-
-## Using TypeScript
-
-This template comes with a script to set up a TypeScript development environment, you can run it immediately after cloning the template with:
-
-```bash
-node scripts/setupTypeScript.js
-```
-
-Or remove the script via:
-
-```bash
-rm scripts/setupTypeScript.js
-```
-
-## Deploying to the web
-
-### With [Vercel](https://vercel.com)
-
-Install `vercel` if you haven't already:
-
-```bash
-npm install -g vercel
-```
-
-Then, from within your project folder:
-
-```bash
-cd public
-vercel deploy --name my-project
-```
-
-### With [surge](https://surge.sh/)
-
-Install `surge` if you haven't already:
-
-```bash
-npm install -g surge
-```
-
-Then, from within your project folder:
-
-```bash
-npm run build
-surge public my-project.surge.sh
-```
+## What we are working on
+1. Write more/better documentation
+1. Auto updated table

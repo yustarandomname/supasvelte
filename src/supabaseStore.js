@@ -6,7 +6,11 @@ export const sveltesupa = (() => {
 
   return {
     subscribe,
-    init: ({ url, key }) => set(createClient(url, key)),
+    init: ({ url, key }) => {
+      const supabase = createClient(url, key)
+      return set(supabase)
+    },
+    auth: () => { return supabase.auth },
     reset: () => set(false)
   }
 })()

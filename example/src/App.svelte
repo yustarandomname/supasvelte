@@ -4,9 +4,11 @@
 </svelte:head>
 
 <script>
+	import Auth from "../../src/Auth.svelte"
 	import TableTab from "./TableTab.svelte"
+	import EmailCard from "./EmailCard.svelte"
 	import {sveltesupa} from "sveltesupa"
-	import {Tabs} from "projectc-components"
+	import {Tabs, Form, Input, Container, Button} from "projectc-components"
 
 	const SUPABASE_URL = "https://ulvtjjabqrmyytlqkhhv.supabase.co"
 	const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYxOTM3ODMyNywiZXhwIjoxOTM0OTU0MzI3fQ.L32epFv3XaJu7Jk7pd45F9AN8U4-80j_Dc1I4LF8ZZ8'
@@ -22,7 +24,40 @@
 		{component: TableTab, props: {title: "Range", range: [3,4]}},
 		{component: TableTab, props: {title: "Where", where: ["id", ">=", "2"]}}
 	]
+
+	let email;
+	let password;
 </script>
 
-<Tabs {tabs}>
-</Tabs>
+<EmailCard/>
+
+<Auth {sveltesupa} let:user let:signIn let:signUp let:signOut let:error>
+	<Container size="m">
+		<pre>
+			{JSON.stringify(user, null, 2)}
+		</pre>
+
+		<Button on:click={() => signOut()}>Sign out</Button>
+	</Container>
+
+	<Tabs {tabs} />
+
+	<div slot="logged-out">
+		<Form submitMessage="sign in" on:submit={() => signIn({email, password})}>
+			<Input.Email bind:value={email}/>
+			<Input.Password bind:value={password}/>
+			<pre>
+				{JSON.stringify(user, null, 2)}
+			</pre>
+		</Form>
+
+		<Form submitMessage="sign up" on:submit={() => signUp({email, password})}>
+			<Input.Email bind:value={email}/>
+			<Input.Password bind:value={password}/>
+			<pre>
+				{JSON.stringify(user, null, 2)}
+			</pre>
+		</Form>
+
+	</div>
+</Auth>
