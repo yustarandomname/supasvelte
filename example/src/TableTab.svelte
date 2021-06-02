@@ -33,7 +33,7 @@
 </style>
 
 <h3>{title}</h3>
-<Table name="Users" {select} {where} {limit} {order} {single} {range} let:data let:error let:refresh>
+<Table name="Users" {select} {where} {limit} {order} {single} {range} let:data let:error let:refresh let:count>
   <Container>
     <div>
       {"<Table name='Comments'"}
@@ -51,7 +51,7 @@
     </div>
   </Container>
 
-  <Form size="s" header="Props" submitMessage="Retry" on:submit={() => refresh()}>
+  <Form size="s" header="Props" submitMessage="Refresh" on:submit={refresh}>
     <Input.Text header="select" footer="Comma separated columns you would like to fetch." placeholder="select" bind:value={select} />
 
     <Input.MultiInput header="limit" footer="Limit the amount of rows fetched from your database.">
@@ -82,7 +82,7 @@
   </Form>
 
   {#if data}
-    <Container size="s" header="Data">
+    <Container size="s" header={`Data - rows: ${count}`}>
       <pre>
         {JSON.stringify(data, null, 2)}
       </pre>

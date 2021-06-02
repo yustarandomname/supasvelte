@@ -4,8 +4,7 @@
 </script>
 
 <Auth {sveltesupa} let:user>
-  {console.log(user)}
-  <Container>
+  <Container header="email">
 	  Email: {user.email}
   </Container>
 </Auth>
