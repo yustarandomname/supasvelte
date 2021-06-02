@@ -14,9 +14,12 @@
   // // FILTER
   export let where = false
 
+  export let countType = "estimated"
+
   // Local reactive variables
   let _error = false
-  let _data;
+  let _data; 
+  let _count = 0;
 
   function findFilterType(type) {
     switch (type) {
@@ -41,13 +44,14 @@
     return {filteredRes: res.filter(where[0], findFilterType(where[1]), `${where[2]}`)}
   }
 
-  async function getTable() {
+  // SET _data to the data that is queried
+  async function getData() {
     if (!$sveltesupa) {_error = {message: "Supabase is not yet inited"}}
     if (!name) {_error = {message: "Please specify the name of the table", code: "42P01"}; return}
 
     let res = $sveltesupa
       .from(name)
-      .select(select)
+      .select(select, {count: countType})
 
     if (where) {
       const {filteredRes, error} = filterRes(res)
@@ -60,27 +64,28 @@
     if (range && range[0] && range[1]) res = res.range(range[0], range[1])
     if (single) res = res.single()
 
-    let {data, error: supabaseError} = await res
+    let {data, error: supabaseError, count} = await res
 
     // set local _error to supabase error
     _error = supabaseError
     if (supabaseError) return 
 
     _data = data
+    _count = await count
+    console.log(_count)
   }
 
-  getTable()
+  getData()
 </script>
 
 {#if _error}
-  <slot name="error" error={_error} refresh={() => getTable()}/>
+  <slot name="error" error={_error} refresh={getData}/>
 {:else}
   {#await _data} 
     <slot name="loading"/>
   {:then data}
-    <slot {data} refresh={() => getTable()}/>
+    <slot {data} count={_count} refresh={getData}/>
   {:catch error}
-    catch error
-    <slot name="error" {error} refresh={() => getTable()} />
+    <slot name="error" {error} refresh={getData} />
   {/await}
 {/if}
