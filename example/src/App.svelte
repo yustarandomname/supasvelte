@@ -30,15 +30,6 @@
 	let password;
 
 	let fileName = "IMG_5345.jpeg";
-
-	const mySubscription = $sveltesupa
-		.from('*')
-		.on('*', payload => {
-			console.log('Change received!', payload)
-		})
-		.subscribe()
-
-		console.log($sveltesupa.getSubscriptions())
 </script>
 
 <style>
@@ -51,17 +42,6 @@
 <EmailCard/>
 
 <Auth {sveltesupa} let:user let:signIn let:signUp let:signOut let:error>
-	<Container size="m" header="Storage">
-		<Input.Dropdown options={["IMG_5345.jpeg", "IMG_5357.jpeg", "IMG_5430.jpeg", "IMG_5455.jpeg", "IMG_5460.jpeg"]} bind:value={fileName}/>
-		<Storage bucket="cats" file={fileName} let:src let:error>
-			<img {src} alt="blob">
-	
-			{#if error}
-				<pre>error: {JSON.stringify(error, null, 2)}</pre>
-			{/if}
-		</Storage>
-	</Container>
-
 	<Container size="m" header="Auth">
 		<pre>
 			{JSON.stringify(user, null, 2)}
@@ -82,6 +62,16 @@
 			<Input.Email bind:value={email}/>
 			<Input.Password bind:value={password}/>
 		</Form>
-
 	</div>
+
+	<Container size="m" header="Storage">
+		<Input.Dropdown options={["IMG_5345.jpeg", "IMG_5357.jpeg", "IMG_5430.jpeg", "IMG_5455.jpeg", "IMG_5460.jpeg"]} bind:value={fileName}/>
+		<Storage bucket="cats" file={fileName} let:src let:error>
+			<img {src} alt="blob">
+	
+			{#if error}
+				<pre>error: {JSON.stringify(error, null, 2)}</pre>
+			{/if}
+		</Storage>
+	</Container>
 </Auth>

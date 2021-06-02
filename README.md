@@ -138,10 +138,18 @@ import {Storage} from "sveltesupa"
 ```
 
 ## What we are working on
-1. Auto updated (subscription) table
+1. Sort rows by a specified column name order
+2. Add third party auth providers
+3. Make upload file component
+4. Able to delete files
+5. Able to upload row in Table
+6. Able to delte row in Table
 
 # Change log
 ## Version 0.1.0
 - Added storage component
 - Added count for Table
 - Removed error text for Table component
+
+## Version 0.1.1
+- Added auto updated (subscription) table

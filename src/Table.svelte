@@ -72,9 +72,15 @@
 
     _data = data
     _count = await count
-    console.log(_count)
   }
 
+  // add realtime fuctionality to Table component
+  const mySubscription = $sveltesupa
+		.from(name)
+		.on('*', _ => getData())
+		.subscribe()
+
+  // Init data
   getData()
 </script>
 
