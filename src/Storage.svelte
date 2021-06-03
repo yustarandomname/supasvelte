@@ -2,7 +2,7 @@
   import {sveltesupa} from "./supabaseStore"
 
   export let bucket;
-  export let file;
+  export let file = false;
 
   let _src;
   let _error;
@@ -33,12 +33,46 @@
     }
   }
 
+  async function remove() {
+    try {
+      const tempSrc = [..._src]
+      const _src = null
+
+      const { error} = await $sveltesupa.storage
+        .from(bucket)
+        .remove([file])
+
+      if (error) {
+        _src = tempSrc
+        throw error
+      }
+    } catch (error) {
+      _error = error
+    }
+  }
+
+  async function upload(files) {
+    try {
+      for (file in files) {
+        const { error } = await $sveltesupa.storage
+          .from(bucket)
+          .upload(file.name, file)
+
+        if (error) throw error
+      }
+      _src = URL.createObjectURL(files[0])
+    } catch (error) {
+      _error = error
+    }
+    
+  }
+
 </script>
 
 {#if _loading}
   <slot name="loading" error={_error}/>
 {:else if _error}
   <slot error={_error}/>
-{:else if _src}
-  <slot error={_error} src={_src} />
+{:else}
+  <slot error={_error} src={_src} {remove} {upload}/>
 {/if}

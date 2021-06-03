@@ -120,16 +120,42 @@ Go to or create your supabase project. In the ``API`` sidebar, go to ``Authenica
 import {Storage} from "sveltesupa"
 ```
 
-> ⚠️ Don't forget to set your policies where users have at least access to SELECT 
+> ⚠️ Don't forget to set your policies where users have at least access to SELECT and optionaly DELETE, INSERT, UPDATE 
 
 #### Props
 - **bucket**:[String] - *[Required]* - Bucket name
 - **file**: [String] - *[Required]* - Path to file name
 
 #### Example
+- Download a image from bucket
 ```html
-<Storage bucket="cats" file={fileName} let:src let:error>
+<Storage bucket="cats" file="IMG_123.png" let:src let:error let:delete>
   <img {src} alt="blob">
+
+  <button on:click={delete}>Delete file</button>
+
+  {#if error}
+    <pre>error: {JSON.stringify(error, null, 2)}</pre>
+  {/if}
+</Storage>
+```
+
+- Uplaod image to bucket
+```html
+  <script>
+    let files;
+  </script>
+```
+
+```html
+<Storage bucket="cats" let:src let:error let:upload>
+  {#if src}
+    <img {src} alt="blob">
+  {/if}
+
+  <input type="file" bind:files>
+
+  <button on:click={() => upload(files)}>Delete file</button>
 
   {#if error}
     <pre>error: {JSON.stringify(error, null, 2)}</pre>
@@ -140,8 +166,6 @@ import {Storage} from "sveltesupa"
 ## What we are working on
 1. Sort rows by a specified column name order
 2. Add third party auth providers
-3. Make upload file component
-4. Able to delete files
 5. Able to upload row in Table
 6. Able to delte row in Table
 
@@ -153,3 +177,9 @@ import {Storage} from "sveltesupa"
 
 ## Version 0.1.1
 - Added auto updated (subscription) table
+
+## Version 0.1.2
+- Able to delete files
+
+## Version 0.1.3
+- Able to upload files

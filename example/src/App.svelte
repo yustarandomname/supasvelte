@@ -9,7 +9,7 @@
 	import TableTab from "./TableTab.svelte"
 	import EmailCard from "./EmailCard.svelte"
 	import {sveltesupa} from "sveltesupa"
-	import {Tabs, TabItem, Form, Input, Container, Button} from "projectc-components"
+	import {Tabs, TabItem, Form, Input, Container, Button, Image} from "projectc-components"
 
 	const SUPABASE_URL = "https://ulvtjjabqrmyytlqkhhv.supabase.co"
 	const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYxOTM3ODMyNywiZXhwIjoxOTM0OTU0MzI3fQ.L32epFv3XaJu7Jk7pd45F9AN8U4-80j_Dc1I4LF8ZZ8'
@@ -18,16 +18,10 @@
 
 	let email;
 	let password;
+	let files;
 
 	let fileName = "IMG_5345.jpeg";
 </script>
-
-<style>
-	img {
-		max-height: 30rem;
-		width:auto 
-	}
-</style>
 
 <EmailCard/>
 
@@ -65,11 +59,25 @@
 	<Container size="m" header="Storage">
 		<Input.Dropdown options={["IMG_5345.jpeg", "IMG_5357.jpeg", "IMG_5430.jpeg", "IMG_5455.jpeg", "IMG_5460.jpeg"]} bind:value={fileName}/>
 		<Storage bucket="cats" file={fileName} let:src let:error>
-			<img {src} alt="blob">
+			<Image {src} alt="Blob image"/>
 	
 			{#if error}
 				<pre>error: {JSON.stringify(error, null, 2)}</pre>
 			{/if}
+		</Storage>
+	</Container>
+
+	<Container size="m" header="Upload to storage">
+		<Storage bucket="cats" let:upload let:src let:error>
+			<Form submitMessage="upload file" on:submit={() => upload(files)}>
+				{#if src}
+					<Image {src} alt="Successfully uploaded this image" header="Result" />
+				{/if}
+
+				<input type="file" bind:files />
+				
+				{#if error}<pre>{error}</pre>{/if}
+			</Form>
 		</Storage>
 	</Container>
 </Auth>

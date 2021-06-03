@@ -126,9 +126,35 @@ import {Storage} from "sveltesupa"
 - **file**: [String] - *[Required]* - Path to file name
 
 #### Example
+- Download a image from bucket
 ```html
-<Storage bucket="cats" file={fileName} let:src let:error>
+<Storage bucket="cats" file="IMG_123.png" let:src let:error let:delete>
   <img {src} alt="blob">
+
+  <button on:click={delete}>Delete file</button>
+
+  {#if error}
+    <pre>error: {JSON.stringify(error, null, 2)}</pre>
+  {/if}
+</Storage>
+```
+
+- Uplaod image to bucket
+```html
+  <script>
+    let files;
+  </script>
+```
+
+```html
+<Storage bucket="cats" let:src let:error let:upload>
+  {#if src}
+    <img {src} alt="blob">
+  {/if}
+
+  <input type="file" bind:files>
+
+  <button on:click={() => upload(files)}>Delete file</button>
 
   {#if error}
     <pre>error: {JSON.stringify(error, null, 2)}</pre>
