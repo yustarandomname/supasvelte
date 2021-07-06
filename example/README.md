@@ -14,8 +14,8 @@ In your terminal, navigate to this directory, and run:
   npm run dev
 ```
 
-## Documentation
-### Initalization
+# Documentation
+## Initalization
 Go to or create your supabase project. In the ``API`` sidebar, go to ``Authenication``. This is where you find your ``SUPABASE_KEY`` and ``SUPABASE_URL``. Paste these in your project. To initialze the project use.
 
 ```javascript
@@ -27,34 +27,34 @@ Go to or create your supabase project. In the ``API`` sidebar, go to ``Authenica
   })
 ```
 
-### Auth
+## Auth
 ```html
   import {Auth} from "sveltesupa"
   <Auth {sveltesupa} />
 ```
 
-#### Props
-- **sveltesupa**: *[Required]* An initialized sveltesupa.
+### Props
+- `sveltesupa`: *[Required]* An initialized sveltesupa.
 
-#### slots
-- user
-- error
-- signIn
-- signUp
-- signOut
+### Slots
+- `user` - Current user in session, if no user is in session than user is null or false.
+- `error` - String of error that happened while preforming auth action.
+- `signIn`: [Function] - Takes parameters email and password to sign in a user.
+- `signUp`: [Function] - Takes parameters `email` and `password` to sign up a user.
+- `signOut`: [Function] - Signs the user out.
 
-#### Example
+### Example
 ```html
 <script>
   import {Auth, sveltesupa} from "sveltesupa"
-  sveltesupa.init({"<YOUR_SUPABASE_URL>", "<YOUR_SUPABASE_KEY>"})
+  sveltesupa.init({url: "<YOUR_SUPABASE_URL>", key: "<YOUR_SUPABASE_KEY>"})
   let credentials = {email:"", password:""}
 </script>
 
 <Auth {sveltesupa} let:user let:signIn let:signOut let:error>
   <pre>{JSON.stringify(user, null, 2)}</pre>
 
-  <button on:click={() => signOut()}>Sign out</button>
+  <button on:click={signOut}>Sign out</button>
 
   <div slot="logged-out">
     <form on:submit={signIn(credentials)}>
@@ -66,42 +66,42 @@ Go to or create your supabase project. In the ``API`` sidebar, go to ``Authenica
 </Auth>
 ```
 
-### Table
-#### Props
-- **name**:[String] - *[Required]* - A name of a certain table in your database.
-- **select**: [String] - A comma seperated string of collums in a database. Default is all columns.
-- **limit**: [String | Num | **false**] - Limit the amount of rows
-- **order**: [">" | "<" | **false**] - Order row id from large to small or small to large.
-- **range**: [[String, String] | **false**] - From, to row
-- **single**: [String | **false**] - Returns only one data item
-- **where**: [[[String], [String], [String]] | **false** ] - ["Column name", "Filter type", "value"]
+## Table
+### Props
+- `name`: [String] - *[Required]* - A name of a certain table in your database.
+- `select`: [String] - A comma seperated string of collums in a database. Default is all columns.
+- `limit`: [String | Num | **false**] - Limit the amount of rows
+- `order`: [">" | "<" | **false**] - Order row id from large to small or small to large.
+- `range`: [[String, String] | **false**] - From, to row
+- `single`: [String | **false**] - Returns only one data item
+- `where`: [[[String], [String], [String]] | **false** ] - ["Column name", "Filter type", "value"]
 
-#### Filter types
-- == - alias for equal to, eq.
-- === - alias for strictly equal to, is
-- < - alias for less than, lt
-- \> - alias for greater than, gt
-- <= - alias for less than or equal to, lte
-- \>= - alias for greater than or equal to, gte
-- % - alias for like
-- i% - alias for ilike
-- contains
-- contained by
-- in
-- rangeGt
-- rangeGte
-- rangeLt
-- rangeLte
-- range adjacent
-- overlaps
-- textseatch
+### Filter types
+- `==` - alias for equal to, eq.
+- `===` - alias for strictly equal to, is
+- `<` - alias for less than, lt
+- `\>` - alias for greater than, gt
+- `<=` - alias for less than or equal to, lte
+- `\>=` - alias for greater than or equal to, gte
+- `%` - alias for like
+- `i%` - alias for ilike
+- `contains`
+- `containedBy`
+- `in`
+- `rangeGt`
+- `rangeGte`
+- `rangeLt`
+- `rangeLte`
+- `rangeAdjacent`
+- `overlaps`
+- `textseatch`
 
 
-#### Slots
-- data - array of rows
-- error
-- refresh
-#### Example
+### Slots
+- `data` - array of rows
+- `error` - String of errors that happen during Table actions.
+- `refresh`: [Function] - Will manually refresh the data
+### Example
 ```html
   <Table name="Users" select="name, surname" limit={3} where={["id",">=","3"]}  let:data let:error let:refresh>
     <h1>data</h1>
@@ -114,19 +114,19 @@ Go to or create your supabase project. In the ``API`` sidebar, go to ``Authenica
   </Table>
 ```
 
-### Storage
+## Storage
 ```javascript
 import {Storage} from "sveltesupa"
 ```
 
 > ⚠️ Don't forget to set your policies where users have at least access to SELECT 
 
-#### Props
-- **bucket**:[String] - *[Required]* - Bucket name
-- **file**: [String] - *[Required]* - Path to file name
+### Props
+- `bucket`: [String] - *[Required]* - Bucket name
+- `file`: [String] - *[Required]* - Path to file name
 
-#### Example
-- Download a image from bucket
+### Example
+#### Download a image from bucket
 ```html
 <Storage bucket="cats" file="IMG_123.png" let:src let:error let:delete>
   <img {src} alt="blob">
@@ -139,7 +139,7 @@ import {Storage} from "sveltesupa"
 </Storage>
 ```
 
-- Uplaod image to bucket
+#### Uplaod image to bucket
 ```html
   <script>
     let files;
@@ -162,7 +162,7 @@ import {Storage} from "sveltesupa"
 </Storage>
 ```
 
-## What we are working on
+# What we are working on
 1. Write more/better documentation
 2. Auto updated table
 
